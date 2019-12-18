@@ -10,6 +10,33 @@ ef:http://drken1215.hatenablog.com/entry/2019/04/14/174800
 という２つのパターンしかない
 """
 
+def solve4():
+    s = list(input())
+
+    s_len = len(s)
+
+    # s_lenが奇数のときを考慮しなければならない
+    if s_len % 2 == 0:
+        case1 = "10" * (s_len // 2)
+        case2 = "01" * (s_len // 2)
+    else:
+        case1 = "10" * (s_len // 2) + "1"
+        case2 = "01" * (s_len // 2) + "0"
+
+    case1_num = 0
+    case2_num = 0
+    # s_list = list(s)
+    # case1_list = list(case1)
+    # case2_list = list(case2)
+    for s_char, case1_char, case2_char in zip(s, case1, case2):
+        if s_char != case1_char:
+            case1_num += 1
+        if s_char != case2_char:
+            case2_num += 1
+
+    return min(case1_num, case2_num)
+        
+
 def solve3():
     """solve1の変形
     ２種類のパターンしかないので分岐して調べる
@@ -70,4 +97,5 @@ def solve1():
     return min(counter_bw, counter_wb)
 
 # print(solve1())
-print(solve2())
+# print(solve2())
+print(solve4())
