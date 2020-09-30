@@ -21,6 +21,12 @@ class Item(object):
         result = '<' + self.name + '. ' + str(self.value) + '. ' + str(self.weight) + '>'
         return result
 
+
+    def __repr__(self):
+        result = '<' + self.name + '. ' + str(self.value) + '. ' + str(self.weight) + '>'
+        return result        
+
+
 def value(item):
     return item.get_value()
 
