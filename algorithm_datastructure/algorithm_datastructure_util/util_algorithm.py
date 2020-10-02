@@ -3,7 +3,7 @@ import unittest
 import contextlib
 from testfixtures import compare, Comparison as C
 
-from util_test import time_measure
+from .util_test import time_measure
 
 
 # フィボナッチ数列
