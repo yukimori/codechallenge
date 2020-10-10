@@ -14,6 +14,11 @@ from algorithm_datastructure_util import time_measure
 # errorになる
 # from algorithm_datastructure_util import time_measure
 
+"""
+ pytest -vvv --capture=no util_test.py
+ * --capture=no テストをpassしてもprintを表示させる
+"""
+
 
 def choose_best(pset, max_weight, get_val, get_weight):
     """max_weight内で最も価値が高くなるitemの組み合わせを力づくで抽出する。
