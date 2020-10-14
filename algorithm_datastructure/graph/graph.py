@@ -41,3 +41,47 @@ class WeightedEdge(Edge):
 
     def __str__(self):
         return self.src.get_name() + '->(' + self.weight + ')' + self.dst.get_name()
+
+
+class Digraph(object):
+    """nodesはNodeオブジェクトのリストである
+    edgesは
+    """
+    def __init__(self):
+        self.nodes = []
+        self.edges = {}
+
+    def add_node(self, node):
+        if node in self.nodes:
+            raise ValueError("duplicate node")
+        else:
+            self.nodes.append(node)
+            self.edges[node] = []
+
+    def add_edge(self, edge):
+        src = edge.get_source()
+        dest = edge.get_destination()
+        if not (src in self.nodes and dest in self.nodes):
+            raise ValueError("Node not in graph")
+        self.edges[src].append(dest)
+
+    def children_of(self, node):
+        return self.nodes[node]
+
+    def has_node(self, node):
+        return node in self.nodes
+
+    def __str__(self):
+        result = ''
+        for src in self.nodes:
+            for dst in self.edges:
+                result = result + src.get_name() + '->' + dst.get_name() + '\n'
+        # 最後の改行を削除
+        return result[:-1]
+
+
+class Graph(Digraph):
+    def add_edge(self, edge):
+        super().add_edge(edge)
+        rev = Edge(edge.get_destination(), edge.get_source())
+        super().add_edge(rev)
