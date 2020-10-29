@@ -85,3 +85,19 @@ class Graph(Digraph):
         super().add_edge(edge)
         rev = Edge(edge.get_destination(), edge.get_source())
         super().add_edge(rev)
+
+
+def print_path(path):
+    """pathはNodeオブジェクトからなるリストととする
+
+    Args:
+        path ([type]): [description]
+    """
+    result = ''
+    for i in range(len(path)):
+        result = result + str(path[i])
+        if i != len(path) - 1:
+            result = result + '->'
+    return result
+
+
