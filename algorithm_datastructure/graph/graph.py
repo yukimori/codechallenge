@@ -45,7 +45,7 @@ class WeightedEdge(Edge):
 
 class Digraph(object):
     """nodesはNodeオブジェクトのリストである
-    edgesは
+    edgesは各nodeを、そのnodeの子ノードのリストにマップする辞書
     """
     def __init__(self):
         self.nodes = []
@@ -66,7 +66,7 @@ class Digraph(object):
         self.edges[src].append(dest)
 
     def children_of(self, node):
-        return self.nodes[node]
+        return self.edges[node]
 
     def has_node(self, node):
         return node in self.nodes
@@ -101,3 +101,39 @@ def print_path(path):
     return result
 
 
+def dfs(graph, start, end, path, shortest, to_print=False):
+    """depth-first searh(深さ優先探索)
+    graphでのstartからendへの最短経路を返却する。
+    再帰的なメソッド
+
+    Args:
+        graph (Digraph): [description]
+        start (Node): [description]
+        end (Node): [description]
+        path ([Node]): [description]
+        shortest ([Node]): [description]
+        to_print (bool, optional): [description]. Defaults to False.
+    """
+    path = path + [start]
+
+    if to_print:
+        print(f'Current DFS path: {print_path(path)}')
+
+    # 再帰的な探索によりゴール(end)まで行き着いたとき
+    if start == end:
+        return path
+
+    # startノードから次のノードを探索する
+    for node in graph.children_of(start):
+        # ループを避ける
+        if node not in path:
+            if shortest == None or len(path) < len(shortest):
+                new_path = dfs(graph, node, end, path, shortest, to_print)
+                if new_path != None:
+                    shortest = new_path
+
+    return shortest
+
+
+def shortest_path(graph, start, end, to_print=False):
+    return dfs(graph, start, end, [], None, to_print)
