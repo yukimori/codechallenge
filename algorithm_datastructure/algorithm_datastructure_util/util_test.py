@@ -2,6 +2,11 @@ import time
 import unittest
 import contextlib
 from testfixtures import compare, Comparison as C
+try:
+    from inspect import signature
+except ImportError:
+    from funcsigs import signature
+
 
 
 """
@@ -22,16 +27,30 @@ def print_list_2d(l_2d):
 def time_measure(func):
     """メソッド処理時間を測定する
     """
-    def wrapper(*args, **kargs):
+    def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
         
-        result = func(*args, **kargs)
-        
+        result = func(*args, **kwargs)
+
         end_time = time.perf_counter()
         execution_time = end_time - start_time
+
+        # 受け取ったパラメータも表示する
+        # ref: https://blog.amedama.jp/entry/2016/10/31/225219
+        # デコレーションする関数のシグネチャを取得する
+        sig = signature(func)
+        # 受け取ったパラメータをシグネチャにバインドする
+        bound_args = sig.bind(*args, **kwargs)
+        # 関数名やバインドしたパラメータの対応関係を取得する
+        func_name = func.__name__
+        func_args = ','.join('{k}={v}'.format(k=k, v=v)
+                             for k, v in bound_args.arguments.items())
+
         # https://www.headboost.jp/python-print-handle-number-of-digits/
         # fプリフィックスにおける桁数指定
-        print(f'{func.__name__}: {execution_time:.6f} [s]')
+        print('\n-------')
+        print(f'{func_name}({func_args}) => {execution_time:.6f} [s]')
+        print('-------')
         return result
     return wrapper
 
