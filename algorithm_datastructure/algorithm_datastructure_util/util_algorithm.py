@@ -6,6 +6,35 @@ from testfixtures import compare, Comparison as C
 from .util_test import time_measure
 
 
+#
+# pytestの場合
+# pytest -vvv --capture=no util_algorithm.py
+#
+
+
+
+# フィボナッチ関数の再帰的実装
+def fastfib(n, memo={}):
+    """フィボナッチ数列の計算
+    メモ化。memoは再帰呼び出しによってのみ利用される
+
+    Args:
+        n ([type]): [description]
+        memo (): 計算済みのフィボナッチ数列の値。memoは再帰呼び出しによってのみ利用される
+
+    Returns:
+        [type]: [description]
+    """
+    if n == 0 or n == 1:
+        return 1
+    try:
+        return memo[n]
+    except KeyError:
+        result = fastfib(n-1, memo) + fastfib(n-2, memo)
+        memo[n] = result
+        return result
+
+
 # UnionFind
 """
 UnionFindはN個のノードがいくつかのグループに分かれているときに
@@ -105,6 +134,16 @@ def isPalindrome(s):
 
 
     return isPal(toChars(s))
+
+
+def test_fastfib():
+    result = fastfib(6)
+    assert result == 13
+    time_measure(fastfib)(6)
+    result = fastfib(120)
+    
+    time_measure(fastfib)(120)
+
 
 
 class TestAlgorithm(unittest.TestCase):
