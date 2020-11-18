@@ -146,18 +146,22 @@ def BFS(graph, start, end, to_print=False):
     graphでのstartからendまでの最短経路を返却する
     """
     init_path = [start]
-    # 探索された全てのパスを保存する
+    # 探索対象の全ての経路を保存する
     path_queue = [init_path]
     while len(path_queue) != 0:
-        # path_queueの中で一番古い要素を参照して取り除く
+        # path_queueの中で一番古い要素(経路情報)を参照して取り除く
         tmp_path = path_queue.pop(0)
         if to_print:
+            print(f'----')
             print(f'current BFS path: {print_path(tmp_path)}')
 
+        # 取得した経路のノードの要素を取得し、次のノードの有無を検索する
         last_node = tmp_path[-1]
         if last_node == end:
             return tmp_path
         for next_node in graph.children_of(last_node):
+            # ループになるノードは対象外
+            # 次のノードがある場合は経路を再びpath_queueに追加して探索対象とする
             if next_node not in tmp_path:
                 new_path = tmp_path + [next_node]
                 path_queue.append(new_path)
