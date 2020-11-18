@@ -12,6 +12,10 @@ from .graph import Edge
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from algorithm_datastructure_util import time_measure
 
+#
+# pytest -vvv --capture=no test_graph.py
+#
+
 @pytest.fixture
 def test_digraph():
     nodes = []
@@ -36,10 +40,19 @@ def test_digraph():
     return {'g': g, 'nodes' : nodes}
     
 
-def test_SP(test_digraph):
+def test_DFS(test_digraph):
     from .graph import shortest_path
     from .graph import print_path
     sp =  shortest_path(test_digraph['g'], test_digraph['nodes'][0], 
-                            test_digraph['nodes'][5], to_print=True)
+                            test_digraph['nodes'][-1], to_print=True)
     assert print_path(sp) == '0->2->3->5'
     print(f"shortest path found by DFS: {print_path(sp)}")
+
+
+def test_BFS(test_digraph):
+    from .graph import BFS
+    from .graph import print_path
+    sp = BFS(test_digraph['g'], test_digraph['nodes'][0], 
+                test_digraph['nodes'][-1], to_print=True)
+    assert print_path(sp) == '0->2->3->5'
+    print(f"BFS {print_path(sp)}")

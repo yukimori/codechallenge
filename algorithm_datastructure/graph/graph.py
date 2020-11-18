@@ -1,3 +1,9 @@
+import sys, os
+
+# importを有効にするには__init__.pyを配置する必要あり
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from algorithm_datastructure_util.util_test import print_list_2d
+
 # 12.2 グラフ最適化問題
 
 class Node(object):
@@ -135,5 +141,33 @@ def dfs(graph, start, end, path, shortest, to_print=False):
     return shortest
 
 
+def BFS(graph, start, end, to_print=False):
+    """GraphはDigraphオブジェクト。startとendはNodeオブジェクトであり、graphに属する
+    graphでのstartからendまでの最短経路を返却する
+    """
+    init_path = [start]
+    # 探索された全てのパスを保存する
+    path_queue = [init_path]
+    while len(path_queue) != 0:
+        # path_queueの中で一番古い要素を参照して取り除く
+        tmp_path = path_queue.pop(0)
+        if to_print:
+            print(f'current BFS path: {print_path(tmp_path)}')
+
+        last_node = tmp_path[-1]
+        if last_node == end:
+            return tmp_path
+        for next_node in graph.children_of(last_node):
+            if next_node not in tmp_path:
+                new_path = tmp_path + [next_node]
+                path_queue.append(new_path)
+                if to_print:
+                    print(f'new_path: {print_path(new_path)}')
+                    print(f'path_queue: {print_list_2d(path_queue)}')
+    return None
+
+
 def shortest_path(graph, start, end, to_print=False):
     return dfs(graph, start, end, [], None, to_print)
+
+

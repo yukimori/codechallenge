@@ -9,10 +9,14 @@ from testfixtures import compare, Comparison as C
  * --capture=no テストをpassしてもprintを表示させる
 """
 
-# 標準入出力が使われた処理のテスト
-# ref: https://qiita.com/podhmo/items/70a78c1429525dde0a48
-class redirect_stdin(contextlib._RedirectStream):
-    _stream = "stdin"
+
+def print_list_2d(l_2d):
+    """2次元リストの要素数を表示する
+
+    Args:
+        l_2d ([type]): [description]
+    """
+    return [len(v) for v in l_2d]
 
 
 def time_measure(func):
@@ -30,6 +34,12 @@ def time_measure(func):
         print(f'{func.__name__}: {execution_time:.6f} [s]')
         return result
     return wrapper
+
+
+# 標準入出力が使われた処理のテスト
+# ref: https://qiita.com/podhmo/items/70a78c1429525dde0a48
+class redirect_stdin(contextlib._RedirectStream):
+    _stream = "stdin"
 
 
 class TestSample(unittest.TestCase):
