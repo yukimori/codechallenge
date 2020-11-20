@@ -20,6 +20,34 @@ from algorithm_datastructure_util import time_measure
 """
 
 
+def max_val_decision_tree(to_consider, avail):
+    """コード13.3決定木を用いて0/1ナップザック問題を解く
+
+    Args:
+        to_consider ([type]): 決定木のこれより上のノードではまだ考慮されていない品物
+        avail ([type]): 空いているナップザックの容量
+    """
+    if to_consider == [] or avail == 0:
+        result = (0, ())
+    elif to_consider[0].get_weight() > avail:
+        # [TODO] to_considerに型ヒントを付与する
+        # 右側の分岐（to_consider[0]の商品を買わなかったとき）だけを考える
+        max_val_decision_tree(to_consider[1:], avail)
+    else:
+        next_item = to_consider[0]
+        # 左側の分岐を探索
+        with_val, with_to_take = max_val_decision_tree(to_consider[1:], avail - next_item.get_weight())
+        with_val += next_item.get_value()
+        # 右側の分岐を探索
+        without_val, without_to_take = max_val_decision_tree(to_consider[1:], avail)
+        # よりよい分岐を選択
+        if with_val > without_val:
+            result = (with_val, with_to_take + (next_item, ))
+        else:
+            result = (without_val, without_to_take)
+    return result
+
+
 def choose_best(pset, max_weight, get_val, get_weight):
     """max_weight内で最も価値が高くなるitemの組み合わせを力づくで抽出する。
     全ての組み合わせを列挙し、重量制限を超える組み合わせを取り除き、
