@@ -12,6 +12,23 @@ from .util_test import time_measure
 #
 
 
+# 辞書の値を使った並べ替え
+def sorted_with_dic_value(list_dic, *sort_keys):
+    """辞書を要素にもつlist_dicに対して、sort_keysで指定したキーの値でソートを行い返却する。
+    sort_keysには辞書のキーを指定する。
+    値が同値の場合は元の順序が保持される
+
+    Args:
+        list_dic (list of dict): 辞書のリスト
+        sort_key (str): 辞書のkeyを指定する。可変長引数
+
+    Returns:
+        [type]: [description]
+    """
+    import operator
+    return sorted(list_dic, key=operator.itemgetter(*sort_keys))
+
+
 
 # フィボナッチ関数の再帰的実装
 def fastfib(n, memo={}):
@@ -136,12 +153,29 @@ def isPalindrome(s):
     return isPal(toChars(s))
 
 
+def test_sorted_with_dic_value():
+    counts = [
+        {'word': 'python', 'count': 3},
+        {'word': 'practice', 'count': 3},
+        {'word': 'book', 'count': 2}
+    ]
+
+    sorted_list = sorted_with_dic_value(counts, 'count')
+    print(sorted_list)
+    assert sorted_list[0]['word'] == 'book'
+    assert sorted_list[1]['word'] == 'python'
+
+    sorted_list = sorted_with_dic_value(counts, 'count', 'word')
+    assert sorted_list[1]['word'] == 'practice'
+
+
+
 def test_fastfib():
     result = fastfib(6)
     assert result == 13
     time_measure(fastfib)(6)
     result = fastfib(120)
-    
+
     time_measure(fastfib)(120)
 
 
