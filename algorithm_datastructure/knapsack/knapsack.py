@@ -15,7 +15,7 @@ from algorithm_datastructure_util import time_measure
 # from algorithm_datastructure_util import time_measure
 
 """
- pytest -vvv --capture=no util_test.py
+ pytest -vvv --capture=no knapsack.py
  * --capture=no テストをpassしてもprintを表示させる
 """
 
@@ -32,7 +32,7 @@ def max_val_decision_tree(to_consider, avail):
     elif to_consider[0].get_weight() > avail:
         # [TODO] to_considerに型ヒントを付与する
         # 右側の分岐（to_consider[0]の商品を買わなかったとき）だけを考える
-        max_val_decision_tree(to_consider[1:], avail)
+        result = max_val_decision_tree(to_consider[1:], avail)
     else:
         next_item = to_consider[0]
         # 左側の分岐を探索
@@ -201,6 +201,15 @@ def test_greedy(items):
     taken, val = greedy(items, max_weight, key_function)
     compare(expected_taken_names, get_item_names_from_list(taken))
     display_items_list(taken, val)
+
+
+def test_max_val_decision_tree(items):
+    max_weight = 20
+    val, taken = max_val_decision_tree(items, max_weight)
+    print(val, taken)
+    expected_taken_names = ['clock', 'painting', 'book']
+    # 順序は関係ないく要素が一致していることをチェックする
+    compare(set(expected_taken_names), set(get_item_names_from_list(taken)))
 
 
 
