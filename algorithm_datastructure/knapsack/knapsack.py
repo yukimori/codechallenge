@@ -19,9 +19,34 @@ from algorithm_datastructure_util import time_measure
  * --capture=no テストをpassしてもprintを表示させる
 """
 
+def fast_max_value(to_consider, avail, memo={}):
+    """コード13.5 動的計画法を用いて0/1ナップサック問題を解く
+
+    Args:
+        to_consider
+        avail
+        memo
+    """
+    if (len(to_consider), avail) in memo:
+        result = memo[(len(to_consider), avail)]
+    elif to_consider == [] or avail == 0:
+        result = (0, ())
+    elif to_consider[0].get_weight() >  avail:
+        # 右側の分岐のみを探索
+        # to_consider[0]をナップサックにいれない
+        fast_max_value(to_consider[1:], avail, memo)
+    else:
+        next_item = to_consider[0]
+        # 左側の分岐を探索
+        # to_consider[0]をナップサックに入れる
+        with_val, with_to_take = 
+            fast_max_value(to_consider[1:], avail - next_item.get_wight(), memo)
+    
+
+
 
 def max_val_decision_tree(to_consider, avail):
-    """コード13.3決定木を用いて0/1ナップザック問題を解く
+    """コード13.3 決定木を用いて0/1ナップザック問題を解く
 
     Args:
         to_consider ([type]): 決定木のこれより上のノードではまだ考慮されていない品物
