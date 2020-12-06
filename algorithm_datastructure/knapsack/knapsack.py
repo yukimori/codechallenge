@@ -39,9 +39,18 @@ def fast_max_value(to_consider, avail, memo={}):
         next_item = to_consider[0]
         # 左側の分岐を探索
         # to_consider[0]をナップサックに入れる
-        with_val, with_to_take = 
-            fast_max_value(to_consider[1:], avail - next_item.get_wight(), memo)
-    
+        with_val, with_to_take = fast_max_value(to_consider[1:], avail - next_item.get_wight(), memo)
+        with_val += next_item.get_value()
+
+        # 右側の分岐を探索
+        # to_consider[0]をナップサックに入れない
+        without_val, without_to_take = fast_max_value(to_consider[1:], avail, memo)
+
+        if with_val > without_val:
+            result = (with_val, with_to_take + (next_item, ))
+        else:
+            result = (without_val, without_to_take)
+    return result
 
 
 
@@ -237,4 +246,11 @@ def test_max_val_decision_tree(items):
     compare(set(expected_taken_names), set(get_item_names_from_list(taken)))
 
 
+def test_fast_max_value(items):
+    max_weight = 20
+    val, taken = max_val_decision_tree(items, max_weight)
+    print(val, taken)
+    expected_taken_names = ['clock', 'painting', 'book']
+    # 順序は関係ないく要素が一致していることをチェックする
+    compare(set(expected_taken_names), set(get_item_names_from_list(taken)))
 
