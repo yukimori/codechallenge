@@ -3,6 +3,7 @@ import unittest
 import contextlib
 import pytest
 from testfixtures import compare, Comparison as C
+import random
 
 from .item import Item
 from .item import value
@@ -253,4 +254,23 @@ def test_fast_max_value(items):
     expected_taken_names = ['clock', 'painting', 'book']
     # 順序は関係ないく要素が一致していることをチェックする
     compare(set(expected_taken_names), set(get_item_names_from_list(taken)))
+
+
+def build_many_items(num_items, max_value, max_weight):
+    """[summary]
+
+    Args:
+        num_items ([type]): [description]
+        max_value ([type]): [description]
+        max_weight ([type]): [description]
+
+    Returns:
+        List: ランダム生成した品物のリスト
+    """
+    items = []
+    for i in range(num_items):
+        items.append(str(i),
+                        random.randint(1, max_value),
+                        random.randint(1, max_weight))
+    return items
 

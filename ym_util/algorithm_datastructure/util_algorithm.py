@@ -4,12 +4,45 @@ import contextlib
 from testfixtures import compare, Comparison as C
 
 from .util_test import time_measure
-
+from .util_test import redirect_stdin
+from .util_test import StdinBuffer
 
 #
 # pytestの場合
 # pytest -vvv --capture=no util_algorithm.py
 #
+
+def write_stdin(data):
+    from io import StringIO
+    buf = StringIO()
+    buf.write("{}\n".format(data))
+    buf.seek(0)
+
+    return buf
+
+def input_example():
+    """様々な入力を受け取る例
+
+    Returns:
+        [type]: [description]
+    """
+    #buf = write_stdin("1 2 3 4")
+    #from io import StringIO
+    #buf = StringIO()
+
+    stdin_buffer = StdinBuffer()
+    buf = stdin_buffer.write_stdin("1 2 3 4")
+
+    with redirect_stdin(buf):
+        #buf.write("1 2 3 4\n")
+        #buf.seek(0)
+
+        # 1行の入力を空白分割し、数値変換
+        value = [int(i) for i in input().split()]
+        print(value)
+
+
+    
 
 
 # 辞書の値を使った並べ替え
@@ -151,6 +184,11 @@ def isPalindrome(s):
 
 
     return isPal(toChars(s))
+
+
+def test_input():
+    input_example()
+
 
 
 def test_sorted_with_dic_value():

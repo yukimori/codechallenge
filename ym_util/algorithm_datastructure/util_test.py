@@ -60,6 +60,17 @@ def time_measure(func):
 class redirect_stdin(contextlib._RedirectStream):
     _stream = "stdin"
 
+class StdinBuffer():
+    def __init__(self):
+        from io import StringIO
+        self.buf = StringIO()
+
+    def write_stdin(self, data):
+        self.buf.write("{}\n".format(data))
+        self.buf.seek(0)
+
+        return self.buf
+
 
 class TestSample(unittest.TestCase):
 

@@ -1,8 +1,9 @@
 import sys, os
 
 # importを有効にするには__init__.pyを配置する必要あり
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from algorithm_datastructure_util.util_test import print_list_2d
+sys.path.append(os.path.join(os.path.dirname(__file__), '...'))
+from algorithm_datastructure.util_test import print_list_2d
+#from algorithm_datastructure import util_test
 
 # 12.2 グラフ最適化問題
 
