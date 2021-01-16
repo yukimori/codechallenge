@@ -45,5 +45,31 @@ def example_simple_input():
     print("{} {} {} type(x):{}".format(x, y, z, type(x)))
 
 
+def example_n_line():
+    """1行目に整数Nが与えられて、その後N行の標準入力が続く場合
+    """
+    print("1行目に整数Nが与えられて、その後N行の標準入力が続く場合")
+    input_data = "3\n 2 4\n 3 9\n 5 25\n"
+    print("入力データ:{}".format(input_data))
+    from io import StringIO
+    buf = StringIO()
+    buf.write(input_data)
+    buf.seek(0)
+
+
+    with redirect_stdin(buf):
+        lis = []
+        for _ in range(int(input())):
+            lis.append(input())
+        print(lis)
+
+    buf.write(input_data)
+    buf.seek(0)
+    with redirect_stdin(buf):
+        actual = [list(map(int, input().split())) for _ in range(int(input()))]
+        print(actual)
+
+
 def test_input():
     example_simple_input()
+    example_n_line()
